@@ -1,21 +1,11 @@
+// gcc -o t test.c -lm
+// closest pair algorithm (c)2021 James Huddle
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
 #define BIG 10000
 double  p[BIG][2];
-
-// gcc -o t test.c -lm
-// closest pair algorithm (c)2021 James Huddle
-
-//sorts an array of doubles
-int compd(const void *a,const void *b) {
-  double x,y;
-  x = *((double *) a); y = *((double *) b);
-  if(a-b < 0) return -1;
-  if(a-b > 0) return 1;
-  return 0;
-}
 
 // sorts an array of double arrays
 int compa(const void *a,const void *b) {
@@ -27,57 +17,56 @@ int compa(const void *a,const void *b) {
   return 0;
 }
 
-int comp(const void *a,const void *b) {
-  return *((int *) a) - *((int *) b);
-}
-
 // distance formula
 double distance(double dx, double dy) {
   return sqrt( (dx*dx) + (dy*dy) );
 }
 
-
 int main() {
   FILE *f;
-//  int a[10] = {3,12,4,9,77, 29,34,88,7,62};
-  double fin = 1.0;
   int i, count=0;
+  int j, s1, s2;
+  double  dist, dx, dy, shortest = 100000000; // (any super big num)
 
+// read point data from file
   f = fopen("newtk.dat","r");
-/*
-Thanks, stackoverflow!
-  n = 0;
-  while (fscanf(fp, "%f", &fval[n++]) != EOF)
-    ;
-*/
   i=0;
   while(fscanf(f, "%lf\n", &p[i][0]) != EOF) {
     fscanf(f, "%lf\n", &p[i++][1]);
   }
   fclose(f);
 
-
-  for(i=0;i<10;i++) {
-    printf("%lf, %lf\n",p[i][0],p[i][1]);
-  }
-
+// sort list by x-coordinate (that's what compa does)
   qsort(p, BIG, sizeof(double)*2, compa);
-  printf("\n\n--------\n\n");
 
 /*
-  for(i=0;i<10;i++) {
-    printf("%lf, %lf\n",p[i][0],p[i][1]);
-  }
+   This compound loop *is* the algorithm.  It looks like a O(n^2)
+   process, but the dx quick check converts it into a roughly O(n)
+   process.  Imagine you're checking a list of 10,000 points.
+   Now imagine you find the closest pair.  You're approx 175
+   points into the outer (i) loop, and you compare that point with
+   the next point (176) and the distance just happens to be the
+   smallest distance.  Now, imagine going through the rest of the
+   list.  EITHER dx or dy will be larger than the smallest distance.
+   So you either do 1 subtract and compare (see // timesaver!) and dx
+   is larger (so you're done with all the checks for that point) or you
+   don't bail and you do one more subtract and compare. Logic dictates
+   that you will only check ONE dy value (and bail, because it has to be
+   larger than the smallest distance).  Since you have found the
+   smallest distance, EITHER dx OR dy must be larger for each remaining
+   point in the (i) loop.  This requires only 1 or 2 tests, hence the
+   remaining tests have a time complexity of O(n).  And all the remaining
+   tests consist of 1 or 2 subtract/compares per point.  So it screams.
 */
 
-int j, s1, s2;
-double  dist, dx, dy, shortest = 100000000; // (any super big num)
 for(i=0;i<BIG-1;i++) {
   for(j=i+1;j<BIG;j++) {
-count++;
+//count++;
     dx = p[i][0]-p[j][0];
     if(dx < 0) dx = dx * -1;
+
     if(dx > shortest) { break; } // timesaver!
+
     dy = p[i][1]-p[j][1];
     if(dy < 0) dy = dy * -1;
     if(dy < shortest) {
@@ -87,15 +76,17 @@ count++;
         s2 = j;
         shortest = dist;
 printf("%i, %i, [%lf,%lf]..[%lf,%lf] -- %lf (%i)\n",i,j,p[s1][0],p[s1][1],p[s2][0],p[s2][1],shortest,count);
-      }
-    }
-  }
-}
-printf("%i, %i (%i)\n",i,j,count);
+      } // found new shortest disance
+    } // dy quick check
+  } // inner loop
+} // primary loop
+
+
+//printf("%i, %i (%i)\n",i,j,count);
 printf("shortest distance is %lf\n",shortest);
 
   return 0;
-}
+} // main
 
 /*
 output with 10,000 points.
@@ -126,9 +117,3 @@ real	0m0.033s
 time for 10,000,000 points is just over 12 seconds.
 */
 
-
-/*
-  qsort(a, 10, sizeof(int), comp);
-for(i=0;i<10;i++) { printf("%i  ",a[i]); }
-printf("\n");
-*/
