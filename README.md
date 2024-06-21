@@ -1,5 +1,6 @@
 # Closest Pair - New algorithm
 ```
+// pseudocode with p sorted on the x-axis:
 for(i=0;i<BIG-1;i++) {
   for(j=i+1;j<BIG;j++) {
     dx = p[i][0]-p[j][0];
