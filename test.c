@@ -115,5 +115,6 @@ shortest distance is 0.220299
 real	0m0.033s
 
 time for 10,000,000 points is just over 12 seconds.
+number of brute-force comparisons would be 100,000,000,000,000 (100 trillion)
 */
 
