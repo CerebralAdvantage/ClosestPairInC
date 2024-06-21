@@ -9,14 +9,11 @@ for(i=0;i<BIG-1;i++) {
     if(dy < 0) dy = dy * -1;
     if(dy < shortest) {
       dist = distance(dx,dy);
-      if(dist < shortest) {
-        s1 = i;
-        s2 = j;
-        shortest = dist;
-      } // found new shortest disance
+      if(dist < shortest) { shortest = dist; } // found new shortest disance
     } // dy quick check
   } // inner loop
 } // primary loop
+return shortest;
 ```
 ```
 O(n logn) to sort on one axis only
