@@ -23,3 +23,6 @@ total = O(n logn)
 Doubtful? Run test.c locally.
 ```
 Ask me how.  Better yet, **hire** me!
+```
+james.r.huddle@gmail.com
+```
