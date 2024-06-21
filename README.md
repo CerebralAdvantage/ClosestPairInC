@@ -1,9 +1,5 @@
 # Closest Pair - New algorithm
 ```
-O(n logn) to sort on one axis only
-O(n) to find the closest pair
-total = O(n logn)
-
 for(i=0;i<BIG-1;i++) {
   for(j=i+1;j<BIG;j++) {
     dx = p[i][0]-p[j][0];
@@ -21,6 +17,10 @@ for(i=0;i<BIG-1;i++) {
     } // dy quick check
   } // inner loop
 } // primary loop
-
+```
+```
+O(n logn) to sort on one axis only
+O(n) to find the closest pair
+total = O(n logn)
 ```
 Ask me how.  Better yet, **hire** me!
