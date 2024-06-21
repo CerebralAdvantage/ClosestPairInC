@@ -22,5 +22,6 @@ for(i=0;i<BIG-1;i++) {
 O(n logn) to sort on one axis only
 O(n) to find the closest pair
 total = O(n logn)
+Doubtful? Run test.c locally.
 ```
 Ask me how.  Better yet, **hire** me!
